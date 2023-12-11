@@ -57,7 +57,6 @@ public class DB {
                 stmt.setString(3,aereo);
                 try {
                     stmt.executeUpdate();
-                    System.out.println("Database riempito");
                 } catch (SQLException ecc) {
                     ecc.printStackTrace();
                 }
