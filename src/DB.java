@@ -17,6 +17,7 @@ public class DB {
             }
         }
         //ciao
+        //ciao
         for(String aereo : aerei){
             String noLink = aereo.replace("https://en.wikipedia.org/wiki/","");
             String words[] = noLink.split("_");
