@@ -20,7 +20,6 @@ public class MyAmazingBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         SendMessage message = new SendMessage();
-        SendPhoto messagePhoto = new SendPhoto();
         message.setChatId(update.getMessage().getChatId());
         String seed = "https://en.wikipedia.org/wiki/List_of_aircraft_by_date_and_usage_category";
         try {
@@ -31,7 +30,14 @@ public class MyAmazingBot extends TelegramLongPollingBot {
             throw new RuntimeException(e);
         }
         if (update.hasMessage() && update.getMessage().hasText()) {
-            if(update.getMessage().getText().equals("/start")){
+            if(update.getMessage().getText().equals("/start")||update.getMessage().getText().equals("/marche")){
+                String comandi = "Lista dei comandi:\n/marche elenca la lista dei produttori\n/*nome marca* elenca la lista dei modelli di una marca\n/*nome modello* mosta una foto del modello e ne elenca le caratteristiche";
+                message.setText(comandi);
+                try {
+                    execute(message);
+                } catch (TelegramApiException e) {
+                    throw new RuntimeException(e);
+                }
                 started = true;
 
                 try {
