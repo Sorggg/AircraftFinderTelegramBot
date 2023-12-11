@@ -1,14 +1,10 @@
-
-
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 //cose da fare
-//menu
 //riempi database
 
 public class Main {

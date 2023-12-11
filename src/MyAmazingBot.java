@@ -22,21 +22,19 @@ public class MyAmazingBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         SendPhoto messagePhoto = new SendPhoto();
         message.setChatId(update.getMessage().getChatId());
-        // We check if the update has a message and the message has text
+        String seed = "https://en.wikipedia.org/wiki/List_of_aircraft_by_date_and_usage_category";
+        try {
+            DB.populate(seed);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         if (update.hasMessage() && update.getMessage().hasText()) {
-             // Create a SendMessage object with mandatory fields
-
-
             if(update.getMessage().getText().equals("/start")){
                 started = true;
 
                 try {
-                    String seed = "https://en.wikipedia.org/wiki/List_of_aircraft_by_date_and_usage_category";
-                    DB.populate(seed);
-
-
-
-
                     String query = "SELECT DISTINCT Marca FROM Aerei GROUP BY Marca HAVING COUNT(*)> 2 ;";
                     PreparedStatement stmt = conn1.prepareStatement(query);
                     ResultSet rs = null;
@@ -59,7 +57,7 @@ public class MyAmazingBot extends TelegramLongPollingBot {
                     execute(message);
                     message.setText("Seleziona la marca di aereo che vuoi scoprire");
                     execute(message);
-                } catch (IOException | TelegramApiException e) {
+                } catch (TelegramApiException e) {
                     e.printStackTrace();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);

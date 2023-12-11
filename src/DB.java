@@ -1,13 +1,26 @@
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 public class DB {
-    private static boolean empty = false;
+    private static boolean full = false;
     public static void populate(String seed) throws IOException, SQLException {
-
-        if (empty) {
+        String query = "SELECT COUNT(*) AS conta FROM Aerei";
+        PreparedStatement stmt = MyAmazingBot.conn1.prepareStatement(query);
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery();
+        } catch (SQLException ecc) {
+            ecc.printStackTrace();
+        }
+        while (rs.next()){
+            if(rs.getString("conta").equals("0")){
+                full = true;
+            }
+        }
+        if (full) {
             System.out.println("Riempimento database");
             List<String> aerei = Crawler.findUrls(seed);
             for (int i = 0; i < aerei.size(); i++) {
@@ -37,8 +50,8 @@ public class DB {
                 modello = modello.replace(".","_");
                 modello = modello.replace("/","_");
                 modello = modello.replace("-","_");
-                String query = "INSERT INTO Aerei (Id,Marca,Modello,Indirizzo) VALUES (null,?,?,?)";
-                PreparedStatement stmt = MyAmazingBot.conn1.prepareStatement(query);
+                query = "INSERT INTO Aerei (Id,Marca,Modello,Indirizzo) VALUES (null,?,?,?)";
+                stmt = MyAmazingBot.conn1.prepareStatement(query);
                 stmt.setString(1,marca);
                 stmt.setString(2,modello);
                 stmt.setString(3,aereo);
