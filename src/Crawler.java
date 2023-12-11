@@ -4,6 +4,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,19 +28,18 @@ public class Crawler {
     public static String getPicture(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
         Elements immagini = doc.select("img.mw-file-element");
-        int max = 50;
+        int max = immagini.size()-1;
         int min = 1;
         boolean cerca = true;
         String ris = null;
-        while (cerca){
+        do {
             int n = (int) (Math.random() * (max - min + 1) + min);
             ris = immagini.get(n).absUrl("src");
-            if (!ris.toUpperCase().contains("FLAG") && !ris.toUpperCase().contains("LOGO") && !ris.toUpperCase().contains("ICON") && !ris.toUpperCase().contains("BOOK")&& !ris.toUpperCase().contains("SYMBOL")){
+            if ( !ris.toUpperCase().contains("FLAG") && !ris.toUpperCase().contains("LOGO") && !ris.toUpperCase().contains("ICON") && !ris.toUpperCase().contains("BOOK") && !ris.toUpperCase().contains("SYMBOL")){
                 cerca = false;
             }
-        }
+        }while (cerca);
 
-        System.out.println(ris);
         return ris ;
     }
     public static String getManufacturer(String url) throws IOException {
